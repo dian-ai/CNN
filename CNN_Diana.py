@@ -55,4 +55,42 @@ classifier.add(Dense(1, activation= 'sigmoid'))
 
 classifier.compile(optimizer ='adam', loss= 'binary_crossentropy', metrics=['accuracy'])
 
+
+#part2
 #image preprocessing: we will fit our CNN that we just built to all our images
+#we use a shortcut in Keras, its for image augmentation and consist of preprocessing your images to prevent overfitting
+#in Bbrowser type Keras Documentation- preprocessing, we use the code flow_from_directory, instead of directory we put our dataset.
+#with this code, besides preprocessing and augmentation we even can fit our CNN that we just built on our images.
+#fit_generator method not only fit the CNN to the training set, but it will also test at the same time its performance on some new operations which are gonna be the observations of our test set
+
+from keras.preprocessing.image import ImageDataGenerator
+
+train_datagen = ImageDataGenerator(
+        rescale=1./255,
+        shear_range=0.2,
+        zoom_range=0.2,
+        horizontal_flip=True)
+
+test_datagen = ImageDataGenerator(rescale=1./255)
+
+training_set = train_datagen.flow_from_directory(
+        'dataset/training_set',
+        target_size=(64, 64),
+        batch_size=32,
+        class_mode='binary')
+
+test_set = test_datagen.flow_from_directory(
+        'dataset/test_set',
+        target_size=(64, 64),
+        batch_size=32,
+        class_mode='binary')
+
+#here we fit out CNN to training set and test it on test set
+classifier.fit_generator(
+        training_set,
+        steps_per_epoch=8000,
+        epochs=25,
+        validation_data=test_set,
+        validation_steps=2000)
+
+
