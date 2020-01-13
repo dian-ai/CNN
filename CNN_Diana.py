@@ -38,6 +38,13 @@ classifier.add(Convolution2D(32,3,3, input_shape=(64,64,3), activation="relu" ))
 
 classifier.add(MaxPooling2D(pool_size = (2,2)))
 
+#part3 improving accuracy on test set:
+#we need to change input shape, our CNN should expect what dimension as the input of our image. the input is going to be the pooled feature map of previous layer. so it is not image. so we dont need to include the input shape. so we only need 1- number of feature detectors, 2- dimension of feature detectors ,3 activation function
+
+classifier.add(Convolution2D(32,3,3, input_shape=(64,64,3), activation="relu" ))
+
+classifier.add(MaxPooling2D(pool_size = (2,2)))
+
 #step 3: Flattening >> taking all feature map and put them into one single vector
 
 classifier.add(Flatten())
@@ -94,3 +101,10 @@ classifier.fit_generator(
         validation_steps=2000)
 
 
+#so far the accuracy on training set and test set were somewhat different. therefore inorder to improve the accuracy on test set:
+#make our CNN deeper : either by adding another CNN or add another fully connected layer
+#in this toturial we add another convolutional layer.
+#we add the 2nd layer of CNN right after maxpooling part. afterwards we need to add another maxpooling
+
+
+#if you still want to improve more either add more layer, and increase the feature detector, or even if you want to improve further increase the target size, because that means that we have more number of pixels in one image therefore more info
