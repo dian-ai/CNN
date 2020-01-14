@@ -108,3 +108,35 @@ classifier.fit_generator(
 
 
 #if you still want to improve more either add more layer, and increase the feature detector, or even if you want to improve further increase the target size, because that means that we have more number of pixels in one image therefore more info
+
+
+#Part 4 making new predictions
+
+#start with 1st image cat_or_dog_1 (which is a dog), we want to use a function from numpy to preprocess the image that we want to load, so that it can be accepted by the prediction method that we want to use for single prediction
+
+import numpy as np
+
+# now we need to import the second module which is the  preprocessing image module from Keras
+
+from keras.preprocessing import image
+test_image = image.load_img("dataset/single_prediction/cat_or_dog_1.jpg", target_size = (64,64))
+
+#arguments of load are path of image and target size which should be as same as target size of training set
+
+#our image is colored image so it has another dimension like training set (input shape): 64,64,3
+#so we need to create another dimension
+
+test_image= image.img_to_array(test_image)
+
+#we need to add another dimension to our 3 dimensional array, this dimension corresponds to the batch, predict function only accepts input in a batch even batch only has one element, so modify our variable again
+
+test_image=np.expand_dims(test_image, axis=0)
+result = classifier.predict(test_image)
+
+#1 corresponds to cat or dog? use class indexes
+
+training_set.class_indices
+if result [0][0]==1:
+    prediction = "dog"
+else:
+    prediction=cat
